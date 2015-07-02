@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+
+    >
+    <include android:id="@+id/app_br" layout="@layout/app_br"/>
+    <EditText
+        android:layout_width="290dp"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:id="@+id/searchtext"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="50dp"
+        android:layout_below="@+id/app_br"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchtext"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="145dp"
+        android:text="Search"
+        android:id="@+id/searchButton" />
+</RelativeLayout>

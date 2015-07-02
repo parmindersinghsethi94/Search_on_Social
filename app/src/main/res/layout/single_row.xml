@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <ImageView
+        android:layout_width="62dp"
+        android:layout_height="70dp"
+        android:id="@+id/photo"
+        android:src="@mipmap/ic_launcher"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Parminder Singh Sethi"
+        android:gravity="center"
+        android:id="@+id/nameText"
+        android:layout_toRightOf="@id/photo"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text=""
+        android:layout_below="@id/nameText"
+        android:layout_toRightOf="@id/photo"
+        android:layout_alignLeft="@id/nameText"
+        android:gravity="center"
+        android:id="@+id/userText" />
+
+</RelativeLayout>
