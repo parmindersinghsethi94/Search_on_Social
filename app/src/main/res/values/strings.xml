@@ -8,4 +8,5 @@
     <string name="title_activity_fragment_b">FragmentB</string>
     <string name="title_activity_fragment_c">FragmentC</string>
     <string name="title_activity_main_activity2">MainActivity2</string>
+    <string name="title_activity_fragment_d">FragmentD</string>
 </resources>

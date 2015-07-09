@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,58 +33,54 @@ import java.util.ArrayList;
 
 public class FragmentB extends Fragment {
     protected static final String TAG = "ERROR";
-     ListView l;
+    ListView l;
+    mainHappening2 adapterObj;
+    ProgressDialog progress;
+    ArrayList listName = new ArrayList();
+    final ArrayList listUser = new ArrayList();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        String user=null;
+        String user = null;
         final View view = inflater.inflate(R.layout.activity_fragment_b, container, false);
-        final TextView loading= (TextView) view.findViewById(R.id.loading);
         //fetching the varaible from shared prefences
-        sharedPreferences object=new sharedPreferences(getActivity().getApplicationContext());
-        if(object!=null) {
-            user = object.getText();
-            Toast.makeText(getActivity(),user+" clicked",Toast.LENGTH_LONG).show();
-        }
-        else {
-            Toast.makeText(getActivity(),"clicked",Toast.LENGTH_LONG).show();
-        }
+        sharedPreferences object = new sharedPreferences(getActivity().getApplicationContext());
+        user = object.getText();
+       if(savedInstanceState==null){
+           progress = ProgressDialog.show(getActivity(), "Please Wait",
+                   "Fetching Data...", true);
         //code for json
         String tag_json_obj = "json_obj_req";
-
-        String url = "http://10.10.20.169:82/Social_Search/facebook.php?q="+user;
-//        String url = "http://socialsearch.esy.es/facebook.php?q="+user;
+        String url = "http://socialsearch.esy.es/facebook.php?q=" + user;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null,
                 new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        l= (ListView) view.findViewById(R.id.listView);
+                        l = (ListView) view.findViewById(R.id.listView);
                         try {
-                            ArrayList listName=new ArrayList();
-                            final ArrayList listUser=new ArrayList();
-                           // ArrayList listImage=new ArrayList();
+                            // ArrayList listImage=new ArrayList();
                             JSONArray dataSet = (JSONArray) response.get("data");
                             if (dataSet != null) {
                                 int len = dataSet.length();
-                                for (int i=0;i<len;i++){
-                                    JSONObject json=dataSet.getJSONObject(i);
+                                for (int i = 0; i < len; i++) {
+                                    JSONObject json = dataSet.getJSONObject(i);
                                     listName.add(json.get("name"));
                                     listUser.add(json.get("id"));
-                                  //  listImage.add(json.get("profile_picture"));
+                                    //  listImage.add(json.get("profile_picture"));
 
                                 }
                             }
 //                            l.setAdapter(adapter);
-                            mainHappening2 adapterObj=new mainHappening2(getActivity(),listName,listUser);
-                            loading.setText(" ");
+                            progress.hide();
+                            adapterObj = new mainHappening2(getActivity(), listName, listUser);
+
                             l.setAdapter(adapterObj);
                             l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    String b= (String) listUser.get(position);
-                                    Toast.makeText(getActivity(), "You clicked " + b, Toast.LENGTH_LONG).show();
-                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.fb.com/"+ b));
+                                    String b = (String) listUser.get(position);
+                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.fb.com/" + b));
                                     startActivity(browserIntent);
                                 }
                             });
@@ -102,18 +100,45 @@ public class FragmentB extends Fragment {
             }
         });
         AppController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
+    }
+       else{
+           l= (ListView) view.findViewById(R.id.listView);
+           adapterObj= (mainHappening2) savedInstanceState.getParcelable("myData");
+           l.setAdapter(adapterObj);
+           l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+               @Override
+               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                   String b = (String) listUser.get(position);
+                   Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.fb.com/" + b));
+                   startActivity(browserIntent);
+               }
+           });
+       }
         return view;
 
     }
 
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("myData", (Parcelable) adapterObj);
+    }
 
 }
 
-class mainHappening2 extends ArrayAdapter {
+class MyViewHolder2{
+    TextView nameText;
+    TextView userText;
+    MyViewHolder2(View row){
+          nameText = (TextView) row.findViewById(R.id.nameText);
+          userText = (TextView) row.findViewById(R.id.userText);
+    }
+}
+
+class mainHappening2 extends ArrayAdapter implements Parcelable {
     protected static final String TAG = "ERROR";
     Context context;
-   // String[] images;
     String[] nameList;
     String[] userList;
     public mainHappening2(Context c,ArrayList names,ArrayList user) {
@@ -123,14 +148,32 @@ class mainHappening2 extends ArrayAdapter {
         this.userList= (String[]) user.toArray(new String[user.size()]);
     }
     public View getView(int position,View convertView,ViewGroup parent){
-        LayoutInflater inflater= (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row=inflater.inflate(R.layout.single_row,parent,false);
-        TextView nameText = (TextView) row.findViewById(R.id.nameText);
-        TextView userText = (TextView) row.findViewById(R.id.userText);
+        View row=convertView;
+        final MyViewHolder2 holder;
+        if(row==null) {
+            //only run if row is created for first time
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            row = inflater.inflate(R.layout.single_row, parent, false);
+            holder =new MyViewHolder2(row);
+            row.setTag(holder);
+        }
+        else{
+            holder= (MyViewHolder2) row.getTag();
+        }
         if(!(nameList[position].isEmpty()))
-            nameText.setText(nameList[position]);
+            holder.nameText.setText(nameList[position]);
         else
-            nameText.setText("Nothing to show");
+            holder.nameText.setText("Nothing to show");
         return row;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }

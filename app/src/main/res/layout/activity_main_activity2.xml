@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+
     >
     <include android:id="@+id/app_br" layout="@layout/app_br"/>
 
@@ -15,7 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:id="@+id/title"
-            android:background="#33B5E5"
+            android:background="#4CAF50"
+
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             >

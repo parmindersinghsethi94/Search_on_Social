@@ -17,10 +17,12 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity {
     Button btn;
     EditText txt;
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         final String[] user = new String[1];
         btn= (Button) findViewById(R.id.searchButton);
         txt= (EditText) findViewById(R.id.searchtext);

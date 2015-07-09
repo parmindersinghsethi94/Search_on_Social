@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 
 public class MainActivity2 extends MainActivity {
@@ -45,12 +46,15 @@ class MyAdapter extends FragmentStatePagerAdapter{
         }if(i==2){
             fragment=new FragmentC();
         }
+        if(i==3){
+            fragment= new FragmentD();
+        }
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     public CharSequence getPageTitle(int position){
@@ -61,7 +65,10 @@ class MyAdapter extends FragmentStatePagerAdapter{
             return "Facebook";
         }
         if(position==2){
-            return "LinkedIn";
+            return "GitHub";
+        }
+        if(position==3){
+            return "Images";
         }
         return null;
     }

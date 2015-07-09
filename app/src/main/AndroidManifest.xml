@@ -21,11 +21,11 @@
         </activity>
         <activity
             android:name=".FragmentA"
-            android:label="@string/title_activity_fragment" >
+            android:label="Search On Social" >
         </activity>
         <activity
             android:name=".FragmentB"
-            android:label="@string/title_activity_fragment_b" >
+            android:label="Search On Social" >
         </activity>
         <activity
             android:name=".FragmentC"
@@ -33,7 +33,11 @@
         </activity>
         <activity
             android:name=".MainActivity2"
-            android:label="@string/title_activity_main_activity2" >
+            android:label="Search On Social" >
+        </activity>
+        <activity
+            android:name=".FragmentD"
+            android:label="@string/title_activity_fragment_d" >
         </activity>
     </application>
 

@@ -1,9 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:background="@drawable/main2">
 
-    >
-    <include android:id="@+id/app_br" layout="@layout/app_br"/>
     <EditText
         android:layout_width="290dp"
         android:layout_height="70dp"
